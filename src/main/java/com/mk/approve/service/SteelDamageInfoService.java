@@ -3,6 +3,9 @@ package com.mk.approve.service;
 import com.mk.approve.base.service.IBaseService;
 import com.mk.approve.entity.SteelDamageInfo;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -18,7 +21,9 @@ public interface SteelDamageInfoService extends IBaseService<SteelDamageInfo> {
 
     SteelDamageInfo getSteelDetail(Integer steelId);
 
-    int steelInfoApprove (String steelId,Integer flowState);
+    int steelInfoApprove (String steelId,Integer flowState,Integer secondaryApproverId,String handwritingsignUrl ,Integer identityType);
 
     int addSteelDamageInfo(SteelDamageInfo steelDamageInfo);
+
+    String uploadCloudPicture(Integer steelId) throws Exception;
 }

@@ -44,6 +44,13 @@ public class SteelDamageInfo {
 
     private String steelLength;
     private String steelType;
+
+
+    /**
+     * 日期
+     */
+    private String steelFlowDate;
+
     /**
      * 折损原因
      */
@@ -58,6 +65,25 @@ public class SteelDamageInfo {
     private String damageSituation;
 
     private String remark;
+    /**
+     * 示意图在 云存储的url
+     */
+    private String sketchUrl;
+
+    private String zhiji;
+    private String zhushou;
+    private String lingban;
+    //发起人填的-处理意见
+    private String handleSuggestion;
+    /**
+     * 手写签名 云存储图片url  一级审批人签名
+     */
+    private String handwritingsignUrl1;
+    /**
+     * 手写签名 云存储图片url  二级审批人签名
+     */
+    private String handwritingsignUrl2;
+
     @JsonIgnore
     private Integer delFlag;
 

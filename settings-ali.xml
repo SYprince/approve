@@ -32,6 +32,7 @@
 
     <profiles>
         <profile>
+            <id>approve</id>
             <repositories>
                 <repository>
                     <id>nexus</id>

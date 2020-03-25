@@ -18,27 +18,25 @@
         <result column="factory_name" property="factoryName"/>
         <result column="steel_length" property="steelLength"/>
         <result column="steel_type" property="steelType"/>
+        <result column="steel_flow_date" property="steelFlowDate"/>
         <result column="instrument_number" property="instrumentNumber"/>
         <result column="display_wave" property="displayWave"/>
         <result column="damage_reason" property="damageReason"/>
         <result column="damage_location" property="damageLocation"/>
         <result column="damage_situation" property="damageSituation"/>
         <result column="remark" property="remark"/>
+        <result column="sketch_url" property="sketchUrl"/>
+        <result column="zhiji" property="zhiji"/>
+        <result column="zhushou" property="zhushou"/>
+        <result column="lingban" property="lingban"/>
+        <result column="handle_suggestion" property="handleSuggestion"/>
+        <result column="handwritingsign_url1" property="handwritingsignUrl1"/>
+        <result column="handwritingsign_url2" property="handwritingsignUrl2"/>
         <result column="del_flag" property="delFlag"/>
     </resultMap>
 
     <select id="getSteelListByPromoterId" resultType="com.mk.approve.entity.SteelDamageInfo">
-        select
-            s.steel_id AS steelId,
-            s.steel_flow_name AS steelFlowName,
-            s.flow_state AS flowState,
-            s.promoter_id AS promoterId,
-            s.first_approver_id AS firstApproverId ,
-            s.secondary_approver_id AS secondaryApproverId,
-            (select user_name from user_info where s.promoter_id = user_id)AS promoterName,
-            (select user_name from user_info where s.first_approver_id = user_id)AS firstApproverName,
-            (select user_name from user_info where s.secondary_approver_id = user_id)AS secondaryApproverName
-        from steel_damage_info s,user_info u
+        <include refid="sql_getSteelList"/>
             where
                 s.promoter_id = u.user_id
               and u.del_flag = 0 and s.del_flag = 0
@@ -46,23 +44,21 @@
     </select>
 
     <select id="getSteelListByFirstApproverId" resultType="com.mk.approve.entity.SteelDamageInfo">
-        select
-            s.steel_id AS steelId,
-            s.steel_flow_name AS steelFlowName,
-            s.flow_state AS flowState,
-            s.promoter_id AS promoterId,
-            s.first_approver_id AS firstApproverId ,
-            s.secondary_approver_id AS secondaryApproverId,
-            (select user_name from user_info where s.promoter_id = user_id)AS promoterName,
-            (select user_name from user_info where s.first_approver_id = user_id)AS firstApproverName,
-            (select user_name from user_info where s.secondary_approver_id = user_id)AS secondaryApproverName
-        from steel_damage_info s,user_info u
+        <include refid="sql_getSteelList"/>
         where
             s.first_approver_id = u.user_id
             and u.del_flag = 0 and s.del_flag = 0
             and u.account = #{account}
     </select>
     <select id="getSteelListBySecondaryApproverId" resultType="com.mk.approve.entity.SteelDamageInfo">
+        <include refid="sql_getSteelList"/>
+        where
+            s.secondary_approver_id = u.user_id
+            and u.del_flag = 0 and s.del_flag = 0
+            and u.account = #{account}
+    </select>
+
+    <sql id="sql_getSteelList">
         select
             s.steel_id AS steelId,
             s.steel_flow_name AS steelFlowName,
@@ -70,17 +66,12 @@
             s.promoter_id AS promoterId,
             s.first_approver_id AS firstApproverId ,
             s.secondary_approver_id AS secondaryApproverId,
+            substring_index(s.steel_flow_date,0,9) as steelFlowDate,
             (select user_name from user_info where s.promoter_id = user_id)AS promoterName,
             (select user_name from user_info where s.first_approver_id = user_id)AS firstApproverName,
             (select user_name from user_info where s.secondary_approver_id = user_id)AS secondaryApproverName
         from steel_damage_info s,user_info u
-        where
-            s.secondary_approver_id = u.user_id
-            and u.del_flag = 0 and s.del_flag = 0
-            and u.account = #{account}
-    </select>
-
-    <!--<parameterMap id="User" type="com.mk.approve.entity.UserInfo"/>-->
+    </sql>
 
 
 </mapper>

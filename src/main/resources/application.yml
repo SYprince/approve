@@ -1,6 +1,13 @@
 server:
   port: 9080
-
+#  port: 443
+#  ssl:
+#    key-alias: alias
+#    key-store-type: JKS
+#    key-store-password: 7b1A7Gpf
+#    key-store: classpath:520oo.jks
+#http: # 新加一个http的端口号配置
+#  port: 9080
 spring:
   application:
     name: mk-approve
@@ -12,4 +19,10 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
   type-aliases-package: com.mk.approve.entity  # 注意：对应实体类的路径
+
+path:
+  filepath: /usr/wangzixian/
+  #filepath: f:/
+
+
 

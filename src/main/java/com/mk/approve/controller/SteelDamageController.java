@@ -4,18 +4,19 @@ import com.mk.approve.base.controller.BaseController;
 import com.mk.approve.base.controller.BaseResponse;
 import com.mk.approve.base.utils.ResponseUtils;
 import com.mk.approve.entity.SteelDamageInfo;
-import com.mk.approve.service.IUserInfoBaseService;
 import com.mk.approve.service.SteelDamageInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Description:
@@ -58,9 +59,9 @@ public class SteelDamageController extends BaseController<SteelDamageInfoService
             @ApiImplicitParam(name = "flowState", value = "更新状态值", dataType = "String", paramType = "query", required = true)
     })
     @RequestMapping(value = "/steelInfoApprove")
-    public BaseResponse steelInfoApprove(String steelId,Integer flowState) {
+    public BaseResponse steelInfoApprove(String steelId,Integer flowState,Integer secondaryApproverId,String handwritingsignUrl ,Integer identityType) {
 
-        return ResponseUtils.setResultSuccess(getService().steelInfoApprove(steelId,flowState));
+        return ResponseUtils.setResultSuccess(getService().steelInfoApprove(steelId,flowState,secondaryApproverId,handwritingsignUrl,identityType));
     }
 
     @ApiOperation(value = "新增重伤钢轨信息（发起流转流程）", notes = "新增重伤钢轨信息", httpMethod = "POST")
@@ -68,5 +69,15 @@ public class SteelDamageController extends BaseController<SteelDamageInfoService
     public BaseResponse addSteelDamageInfo(@RequestBody SteelDamageInfo steelDamageInfo) {
 
         return ResponseUtils.setResultSuccess(getService().addSteelDamageInfo(steelDamageInfo));
+    }
+
+    @ApiOperation(value = "下载存单按钮", notes = "根据云存储图片fileid请求获取下载url-根据url下载图片/file/img-生成excel再存服务器", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "steelId", value = "钢轨存单信息流程id", dataType = "Integer", paramType = "query", required = true)
+    })
+    @RequestMapping(value = "/downloadFile")
+    public BaseResponse downloadFile(Integer steelId)  throws Exception {
+
+        return ResponseUtils.setResultSuccess(getService().uploadCloudPicture(steelId));
     }
 }
