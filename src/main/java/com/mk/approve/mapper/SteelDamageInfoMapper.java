@@ -20,4 +20,6 @@ public interface SteelDamageInfoMapper extends BaseMapper<SteelDamageInfo> {
     List<SteelDamageInfo> getSteelListByFirstApproverId(@Param("account")String account);
 
     List<SteelDamageInfo> getSteelListBySecondaryApproverId(@Param("account")String account);
+
+    List<SteelDamageInfo> getAllSteelList();
 }

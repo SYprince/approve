@@ -25,5 +25,5 @@ public interface SteelDamageInfoService extends IBaseService<SteelDamageInfo> {
 
     int addSteelDamageInfo(SteelDamageInfo steelDamageInfo);
 
-    String uploadCloudPicture(Integer steelId) throws Exception;
+    abstract String uploadCloudPicture(Integer steelId) throws Exception;
 }

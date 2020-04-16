@@ -36,10 +36,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.UnknownServiceException;
+import java.net.*;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -72,25 +69,24 @@ public class DownloadCloudFile {
             int start = imgUrl.lastIndexOf("/") + 1;
             picName = imgUrl.substring(start);
         }
-        //SSLContext sslcontext = SSLContext.getInstance("SSL", "SunJSSE");
-        //sslcontext.init(null, new TrustManager[] { new X509TrustUtil() }, new java.security.SecureRandom());
-        //URL url = new URL(imgUrl);
-        //HostnameVerifier ignoreHostnameVerifier = new HostnameVerifier() {
-        //public boolean verify(String s, SSLSession sslsession) {
-        //System.out.println("WARNING: Hostname is not matched for cert.");
-        //return true;
-        //}
-        //};
-        //HttpsURLConnection.setDefaultHostnameVerifier(ignoreHostnameVerifier);
-        //HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
-        //HttpsURLConnection urlCon = (HttpsURLConnection) url.openConnection();
-        //urlCon.setConnectTimeout(6000);
-        //urlCon.setReadTimeout(6000);
+
+        URL url = new URL(imgUrl);
+        if("https".equalsIgnoreCase(url.getProtocol())){
+            SslUtils.ignoreSsl();
+        }
+
+        URLConnection urlCon = url.openConnection();
+        urlCon.setDoInput(true);
+        urlCon.setDoOutput(true);
+        urlCon.setConnectTimeout(20000);
+        urlCon.setReadTimeout(20000);
         //int code = urlCon.getResponseCode();
         //if (code != HttpURLConnection.HTTP_OK) {
         //throw new Exception("文件读取失败");
         //}
-        DataInputStream dataInputStream = new DataInputStream(new URL(imgUrl).openStream());
+        System.out.println("==================!!"+urlCon.toString());
+        DataInputStream dataInputStream = new DataInputStream(urlCon.getInputStream());
+        //new URL(imgUrl).openStream();
         //(urlCon.getInputStream());
 
         FileOutputStream fileOutputStream = new FileOutputStream(new File(filepath+"file/img/"+picName));

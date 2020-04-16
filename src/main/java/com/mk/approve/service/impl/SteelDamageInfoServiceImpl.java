@@ -77,6 +77,9 @@ public class SteelDamageInfoServiceImpl extends BaseServiceImpl<SteelDamageInfoM
             result = steelDamageInfoMapper.getSteelListByFirstApproverId(account);
         }else if(3 == identityType){
             result = steelDamageInfoMapper.getSteelListBySecondaryApproverId(account);
+        }else if(4 == identityType){
+            //查看 全部  D类人
+            result = steelDamageInfoMapper.getAllSteelList();
         }
 
         return result;
@@ -140,8 +143,9 @@ public class SteelDamageInfoServiceImpl extends BaseServiceImpl<SteelDamageInfoM
 
         return this.baseMapper.insertSelective(steelDamageInfo);
     }
+
     @Override
-    public  String uploadCloudPicture(Integer steelId) throws Exception {
+    public String uploadCloudPicture(Integer steelId) throws Exception {
         SteelDamageInfo steelDamageInfo = steelDamageInfoMapper.selectByPrimaryKey(steelId);
 
         Workbook workbook = ExcelUtils.writeExcel(steelDamageInfo);
@@ -149,56 +153,55 @@ public class SteelDamageInfoServiceImpl extends BaseServiceImpl<SteelDamageInfoM
 
 
 
-        CloudFileRequest c = new CloudFileRequest();
+        //CloudFileRequest c = new CloudFileRequest();
+        //
+        //File f = new File();
+        //f.setFileid(steelDamageInfo.getSketchUrl());
+        //f.setMax_age(7200);
+        //File f1 = new File();
+        //f1.setFileid(steelDamageInfo.getHandwritingsignUrl1());
+        //f1.setMax_age(7200);
+        //File f2 = new File();
+        //f2.setFileid(steelDamageInfo.getHandwritingsignUrl2());
+        //f2.setMax_age(7200);
+        //List<File> l = new ArrayList<>();
+        //l.add(f2);
+        //l.add(f1);
+        //l.add(f);
+        //c.setFile_list(l);
+        //JSONObject o = RestTemplateConfig.newRestTemplate().postForEntity("https://api.weixin.qq.com/tcb/batchdownloadfile?access_token=" + this.getToken() , c, JSONObject.class).getBody();
+        //if(o.getInteger("errcode") == 0){
+        //    JSONArray jsonArray =  o.getJSONArray("file_list");
+        //    String sketchName = "none.png";
+        //    String handwriting1Name = "none.png";
+        //    String handwriting2Name = "none.png";
+        //    String img = jsonArray.getJSONObject(0).getString("download_url");
+        //    String handurl1 = jsonArray.getJSONObject(1).getString("download_url");
+        //    String handurl2 = jsonArray.getJSONObject(2).getString("download_url");
+        //    logger.info(jsonArray.toJSONString());
+        //    logger.info(img);
+        //    logger.info(handurl1);
+        //    logger.info(handurl2);
+        //    if(!"".equals(img)){
+        //       sketchName = downloadCloudFile.downloadImg(img);
+        //   }
+        //
+        //    if(!"".equals(handurl1)) {
+        //        handwriting1Name = downloadCloudFile.downloadImg(handurl1);
+        //    }
+        //
+        //    if(!"".equals(handurl2)){
+        //        handwriting2Name = downloadCloudFile.downloadImg(handurl2);
+        //    }
 
-        File f = new File();
-        f.setFileid(steelDamageInfo.getSketchUrl());
-        f.setMax_age(7200);
-        File f1 = new File();
-        f1.setFileid(steelDamageInfo.getHandwritingsignUrl1());
-        f1.setMax_age(7200);
-        File f2 = new File();
-        f2.setFileid(steelDamageInfo.getHandwritingsignUrl2());
-        f2.setMax_age(7200);
-        List<File> l = new ArrayList<>();
-        l.add(f2);
-        l.add(f1);
-        l.add(f);
-        //c.setEnv("test-ck8iu");
-        c.setFile_list(l);
-        JSONObject o = RestTemplateConfig.newRestTemplate().postForEntity("https://api.weixin.qq.com/tcb/batchdownloadfile?access_token=" + this.getToken() , c, JSONObject.class).getBody();
-        if(o.getInteger("errcode") == 0){
-            JSONArray jsonArray =  o.getJSONArray("file_list");
-            String sketchName = "none.png";
-            String handwriting1Name = "none.png";
-            String handwriting2Name = "none.png";
-            String img = jsonArray.getJSONObject(0).getString("download_url");
-            String handurl1 = jsonArray.getJSONObject(1).getString("download_url");
-            String handurl2 = jsonArray.getJSONObject(2).getString("download_url");
-            logger.info(jsonArray.toJSONString());
-            logger.info(img);
-            logger.info(handurl1);
-            logger.info(handurl2);
-            if(!"".equals(img)){
-               sketchName = downloadCloudFile.downloadImg(img);
-           }
-
-            if(!"".equals(handurl1)) {
-                handwriting1Name = downloadCloudFile.downloadImg(handurl1);
-            }
-
-            if(!"".equals(handurl2)){
-                handwriting2Name = downloadCloudFile.downloadImg(handurl2);
-            }
 
 
-            //ExcelUtils excelUtils = new ExcelUtils();
-            return excelUtils.addPictureToExcel(workbook,hssfSheet,sketchName,handwriting1Name,handwriting2Name,steelId);
-        }else {
-            logger.error("下载图片失败："+ o.getInteger("errcode")+o.getString("errmsg"));
-        }
-
-        return "";
+            return excelUtils.addPictureToExcel(workbook,hssfSheet,steelDamageInfo.getSketchUrl(),steelDamageInfo.getHandwritingsignUrl1(),steelDamageInfo.getHandwritingsignUrl2(),steelId);
+        //}else {
+        //    logger.error("下载图片失败："+ o.getInteger("errcode")+o.getString("errmsg"));
+        //}
+        //
+        //return "";
     }
 
 

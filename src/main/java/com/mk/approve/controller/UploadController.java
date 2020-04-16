@@ -1,5 +1,7 @@
 package com.mk.approve.controller;
 
+import com.aspose.cells.ImageOrPrintOptions;
+import com.aspose.cells.SheetRender;
 import com.mk.approve.base.component.GlobalExceptionHandler;
 import com.mk.approve.base.controller.BaseResponse;
 import com.mk.approve.base.utils.ResponseUtils;
@@ -41,7 +43,7 @@ public class UploadController {
     private String filepath;
 
     @RequestMapping(value = "/uploadImgFile")
-    public BaseResponse uploadImgFile(HttpServletRequest request, HttpServletResponse response,String prefix) throws IllegalStateException, IOException {
+    public BaseResponse uploadImgFile(HttpServletRequest request, HttpServletResponse response,String prefix,String subfix) throws IllegalStateException, IOException {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
         MultipartFile multipartFile = multipartHttpServletRequest.getFile("img");
 
@@ -53,7 +55,7 @@ public class UploadController {
             dir.mkdir();
         }
         String uuid= UUID.randomUUID().toString().replace("-","");
-        String fileName = prefix + uuid+"."+"jpg";
+        String fileName = prefix + uuid+  subfix;
 
         File file = new File(path+fileName);
         OutputStream out= null;
@@ -69,7 +71,7 @@ public class UploadController {
                 e.printStackTrace();
             }
         }
-        //返回 用于展示
-        return ResponseUtils.setResultSuccess( path + fileName);
+        //返回 用于展示   仅返回文件名 前拼接 nginx配的虚拟路径
+        return ResponseUtils.setResultSuccess( fileName);
     }
 }

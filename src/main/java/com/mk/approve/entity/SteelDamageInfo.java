@@ -44,7 +44,8 @@ public class SteelDamageInfo {
 
     private String steelLength;
     private String steelType;
-
+    //表格里手填的日期
+    private String steelDate;
 
     /**
      * 日期

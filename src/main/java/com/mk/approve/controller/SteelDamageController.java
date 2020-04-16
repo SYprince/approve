@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.KeyManagementException;
@@ -71,13 +72,13 @@ public class SteelDamageController extends BaseController<SteelDamageInfoService
         return ResponseUtils.setResultSuccess(getService().addSteelDamageInfo(steelDamageInfo));
     }
 
-    @ApiOperation(value = "下载存单按钮", notes = "根据云存储图片fileid请求获取下载url-根据url下载图片/file/img-生成excel再存服务器", httpMethod = "GET")
+    @ApiOperation(value = "下载存单按钮", notes = "根据云存储图片fileid请求获取下载url-根据url下载图片/file/img-生成excel再存服务器", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "steelId", value = "钢轨存单信息流程id", dataType = "Integer", paramType = "query", required = true)
+            @ApiImplicitParam(name = "steelId", value = "钢轨存单信息流程id", dataType = "String", paramType = "query", required = true)
     })
-    @RequestMapping(value = "/downloadFile")
-    public BaseResponse downloadFile(Integer steelId)  throws Exception {
+    @RequestMapping(value = "/downloadFile",method = RequestMethod.POST)
+    public BaseResponse downloadFile(String steelId)  throws Exception {
 
-        return ResponseUtils.setResultSuccess(getService().uploadCloudPicture(steelId));
+        return ResponseUtils.setResultSuccess(getService().uploadCloudPicture(Integer.valueOf(steelId)));
     }
 }
