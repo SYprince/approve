@@ -50,7 +50,7 @@ public class SteelDamageController extends BaseController<SteelDamageInfoService
     })
     @RequestMapping(value = "/getSteelDetail")
     public BaseResponse getSteelDetail(String steelId) {
-
+        System.out.println("");
         return ResponseUtils.setResultSuccess(getService().getSteelDetail(Integer.valueOf(steelId)));
     }
 
